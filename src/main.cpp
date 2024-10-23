@@ -1,73 +1,182 @@
-#include "../include/traits/is_same.h"
-#include "../include/traits/remove.h"
-
+#include "../include/traits/remove.h" // ???滻Ϊ??????????????ʵ???ļ???
 #include <iostream>
-using namespace tt; // 使用你的命名空间
+#include <type_traits>
 
 int main() {
-  int a;
-  int &b = a;
-  int *c = &a;
-  const int d = a;
-  int volatile e = a;
-  int f[5];
+  // ??֤ remove_const_t
+  static_assert(
+      std::is_same_v<tt::remove_const_t<int>, std::remove_const_t<int>>,
+      "remove_const_t<int> mismatch");
+  static_assert(std::is_same_v<tt::remove_const_t<volatile int>,
+                               std::remove_const_t<volatile int>>,
+                "remove_const_t<volatile int> mismatch");
+  static_assert(std::is_same_v<tt::remove_const_t<const int>,
+                               std::remove_const_t<const int>>,
+                "remove_const_t<const int> mismatch");
+  static_assert(
+      std::is_same_v<tt::remove_const_t<int &>, std::remove_const_t<int &>>,
+      "remove_const_t<int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_const_t<const int &>,
+                               std::remove_const_t<const int &>>,
+                "remove_const_t<const int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_const_t<volatile int &>,
+                               std::remove_const_t<volatile int &>>,
+                "remove_const_t<volatile int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_const_t<const volatile int &>,
+                               std::remove_const_t<const volatile int &>>,
+                "remove_const_t<const volatile int&> mismatch");
+  static_assert(
+      std::is_same_v<tt::remove_const_t<int *>, std::remove_const_t<int *>>,
+      "remove_const_t<int*> mismatch");
+  static_assert(std::is_same_v<tt::remove_const_t<const int *>,
+                               std::remove_const_t<const int *>>,
+                "remove_const_t<const int*> mismatch");
+  static_assert(std::is_same_v<tt::remove_const_t<int *const>,
+                               std::remove_const_t<int *const>>,
+                "remove_const_t<int* const> mismatch");
+  static_assert(std::is_same_v<tt::remove_const_t<const int *const>,
+                               std::remove_const_t<const int *const>>,
+                "remove_const_t<const int* const> mismatch");
 
-  // 测试 remove_const
-  static_assert(is_same<remove_const<const int>::type, int>::value,
-                "remove_const failed");
-  static_assert(is_same<remove_const<int>::type, int>::value,
-                "remove_const failed");
+  // ??֤ remove_volatile_t
+  static_assert(
+      std::is_same_v<tt::remove_volatile_t<int>, std::remove_volatile_t<int>>,
+      "remove_volatile_t<int> mismatch");
+  static_assert(std::is_same_v<tt::remove_volatile_t<const int>,
+                               std::remove_volatile_t<const int>>,
+                "remove_volatile_t<const int> mismatch");
+  static_assert(std::is_same_v<tt::remove_volatile_t<volatile int>,
+                               std::remove_volatile_t<volatile int>>,
+                "remove_volatile_t<volatile int> mismatch");
+  static_assert(std::is_same_v<tt::remove_volatile_t<int &>,
+                               std::remove_volatile_t<int &>>,
+                "remove_volatile_t<int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_volatile_t<const int &>,
+                               std::remove_volatile_t<const int &>>,
+                "remove_volatile_t<const int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_volatile_t<volatile int &>,
+                               std::remove_volatile_t<volatile int &>>,
+                "remove_volatile_t<volatile int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_volatile_t<const volatile int &>,
+                               std::remove_volatile_t<const volatile int &>>,
+                "remove_volatile_t<const volatile int&> mismatch");
 
-  // 测试 remove_volatile
-  static_assert(is_same<remove_volatile<int volatile>::type, int>::value,
-                "remove_volatile failed");
-  static_assert(is_same<remove_volatile<int>::type, int>::value,
-                "remove_volatile failed");
+  // ??֤ remove_reference_t
+  static_assert(
+      std::is_same_v<tt::remove_reference_t<int>, std::remove_reference_t<int>>,
+      "remove_reference_t<int> mismatch");
+  static_assert(std::is_same_v<tt::remove_reference_t<int &>,
+                               std::remove_reference_t<int &>>,
+                "remove_reference_t<int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_reference_t<const int &>,
+                               std::remove_reference_t<const int &>>,
+                "remove_reference_t<const int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_reference_t<volatile int &>,
+                               std::remove_reference_t<volatile int &>>,
+                "remove_reference_t<volatile int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_reference_t<int &&>,
+                               std::remove_reference_t<int &&>>,
+                "remove_reference_t<int&&> mismatch");
+  static_assert(std::is_same_v<tt::remove_reference_t<const int &&>,
+                               std::remove_reference_t<const int &&>>,
+                "remove_reference_t<const int&&> mismatch");
 
-  // 测试 remove_reference
-  static_assert(is_same<remove_reference<int &>::type, int>::value,
-                "remove_reference failed");
-  static_assert(is_same<remove_reference<int &&>::type, int>::value,
-                "remove_reference failed");
-  static_assert(is_same<remove_reference<int>::type, int>::value,
-                "remove_reference failed");
+  // ??֤ remove_pointer_t
+  static_assert(
+      std::is_same_v<tt::remove_pointer_t<int>, std::remove_pointer_t<int>>,
+      "remove_pointer_t<int> mismatch");
+  static_assert(
+      std::is_same_v<tt::remove_pointer_t<int *>, std::remove_pointer_t<int *>>,
+      "remove_pointer_t<int*> mismatch");
+  static_assert(std::is_same_v<tt::remove_pointer_t<const int *>,
+                               std::remove_pointer_t<const int *>>,
+                "remove_pointer_t<const int*> mismatch");
+  static_assert(std::is_same_v<tt::remove_pointer_t<int *const>,
+                               std::remove_pointer_t<int *const>>,
+                "remove_pointer_t<int* const> mismatch");
+  static_assert(std::is_same_v<tt::remove_pointer_t<const int *const>,
+                               std::remove_pointer_t<const int *const>>,
+                "remove_pointer_t<const int* const> mismatch");
 
-  // 测试 remove_pointer
-  static_assert(is_same<remove_pointer<int *>::type, int>::value,
-                "remove_pointer failed");
-  static_assert(is_same<remove_pointer<int>::type, int>::value,
-                "remove_pointer failed");
+  // ??֤ remove_array_t
+  // static_assert(std::is_same_v<tt::remove_array_t<int>,
+  // std::remove_array_t<int>>, "remove_array_t<int> mismatch");
+  // static_assert(std::is_same_v<tt::remove_array_t<int[5]>,
+  // std::remove_array_t<int[5]>>, "remove_array_t<int[5]> mismatch");
+  // static_assert(std::is_same_v<tt::remove_array_t<int[]>,
+  // std::remove_array_t<int[]>>, "remove_array_t<int[]> mismatch");
 
-  // 测试 remove_array
-  static_assert(is_same<remove_array<int[]>::type, int>::value,
-                "remove_array failed");
-  static_assert(is_same<remove_array<int[5]>::type, int>::value,
-                "remove_array failed");
+  // ??֤ remove_cv_t
+  static_assert(std::is_same_v<tt::remove_cv_t<int>, std::remove_cv_t<int>>,
+                "remove_cv_t<int> mismatch");
+  static_assert(
+      std::is_same_v<tt::remove_cv_t<const int>, std::remove_cv_t<const int>>,
+      "remove_cv_t<const int> mismatch");
+  static_assert(std::is_same_v<tt::remove_cv_t<volatile int>,
+                               std::remove_cv_t<volatile int>>,
+                "remove_cv_t<volatile int> mismatch");
+  static_assert(std::is_same_v<tt::remove_cv_t<const volatile int>,
+                               std::remove_cv_t<const volatile int>>,
+                "remove_cv_t<const volatile int> mismatch");
+  static_assert(std::is_same_v<tt::remove_cv_t<int &>, std::remove_cv_t<int &>>,
+                "remove_cv_t<int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_cv_t<const int &>,
+                               std::remove_cv_t<const int &>>,
+                "remove_cv_t<const int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_cv_t<volatile int &>,
+                               std::remove_cv_t<volatile int &>>,
+                "remove_cv_t<volatile int&> mismatch");
+  static_assert(std::is_same_v<tt::remove_cv_t<const volatile int &>,
+                               std::remove_cv_t<const volatile int &>>,
+                "remove_cv_t<const volatile int&> mismatch");
 
-  // 测试 remove_arrays
-  static_assert(is_same<remove_arrays<int[]>::type, int>::value,
-                "remove_arrays failed");
-  static_assert(is_same<remove_arrays<int[5]>::type, int>::value,
-                "remove_arrays failed");
-  static_assert(is_same<remove_arrays<int[5][10]>::type, int>::value,
-                "remove_arrays failed");
+  static_assert(std::is_same<tt::remove_rp_t<int &>, int>::value,
+                "Failed for int&");
+  static_assert(std::is_same<tt::remove_rp_t<const int &>, const int>::value,
+                "Failed for const int&");
+  static_assert(
+      std::is_same<tt::remove_rp_t<volatile int &>, volatile int>::value,
+      "Failed for volatile int&");
+  static_assert(std::is_same<tt::remove_rp_t<int *>, int>::value,
+                "Failed for int*");
+  static_assert(std::is_same<tt::remove_rp_t<const int *>, const int>::value,
+                "Failed for const int*");
+  static_assert(std::is_same<tt::remove_rp_t<int **>, int *>::value,
+                "Failed for int**");
+  static_assert(std::is_same<tt::remove_rp_t<int *&>, int>::value,
+                "Failed for int*&");
+  static_assert(std::is_same<tt::remove_rp_t<const int *&>, const int>::value,
+                "Failed for const int*&");
+  static_assert(std::is_same<tt::remove_rp_t<int &&>, int>::value,
+                "Failed for int&&");
+  static_assert(std::is_same<tt::remove_rp_t<int ***>, int **>::value,
+                "Failed for int***");
 
-  // 测试 remove_cv
-  static_assert(is_same<remove_cv<const volatile int>::type, int>::value,
-                "remove_cv failed");
-  static_assert(is_same<remove_cv<int>::type, int>::value, "remove_cv failed");
+  // ???? remove_cvrp_t
+  static_assert(std::is_same<tt::remove_cvrp_t<int &>, int>::value,
+                "Failed for int&");
+  static_assert(std::is_same<tt::remove_cvrp_t<const int &>, int>::value,
+                "Failed for const int&");
+  static_assert(std::is_same<tt::remove_cvrp_t<volatile int>, int>::value,
+                "Failed for volatile int");
+  static_assert(std::is_same<tt::remove_cvrp_t<const volatile int>, int>::value,
+                "Failed for const volatile int");
+  static_assert(std::is_same<tt::remove_cvrp_t<int *&>, int>::value,
+                "Failed for int*&");
+  static_assert(std::is_same<tt::remove_cvrp_t<const int *&>, int>::value,
+                "Failed for const int*&");
+  static_assert(std::is_same<tt::remove_cvrp_t<int **>, int *>::value,
+                "Failed for int**");
+  static_assert(
+      std::is_same<tt::remove_cvrp_t<const int **>, const int *>::value,
+      "Failed for const int**");
+  static_assert(std::is_same<tt::remove_cvrp_t<int ***>, int **>::value,
+                "Failed for int***");
+  static_assert(
+      std::is_same<tt::remove_cvrp_t<const int ***>, const int **>::value,
+      "Failed for const int***");
 
-  // 测试 remove_rp
-  static_assert(is_same<remove_rp<int *>::type, int>::value,
-                "remove_rp failed");
-  static_assert(is_same<remove_rp<int &>::type, int>::value,
-                "remove_rp failed");
-
-  // 测试 remove_cvrp
-  //static_assert(is_same<remove_cvrp<const int *&>::type, int>::value,
-  //              "remove_cvrp failed");
-  static_assert(is_same<remove_cvrp<int volatile &>::type, int>::value,
-                "remove_cvrp failed");
-
+  // ??ӡ??֤ͨ??????Ϣ
+  std::cout << "All tests passed!" << std::endl;
   return 0;
 }

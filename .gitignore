@@ -1,3 +1,17 @@
+# CMake build files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeSettings.json
+CMakePresets.json
+
+# Output directories
+out/
+
+# Makefile generated files
+Makefile
+
+
 # Prerequisites
 *.d
 
